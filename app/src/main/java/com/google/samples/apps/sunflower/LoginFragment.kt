@@ -21,9 +21,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import com.google.samples.apps.sunflower.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
+        val binding = FragmentLoginBinding.inflate(inflater, container, false)
+        binding.login.setOnClickListener { v ->
+            if (binding.username.text.toString() == "lisi"&&
+                    binding.password.text.toString()=="666") {
+                val direction =
+                        LoginFragmentDirections.actionLoginFragmentToViewPagerFragment()
+                v.findNavController().navigate(direction)
+            }
+        }
+        return binding.root
     }
 }
