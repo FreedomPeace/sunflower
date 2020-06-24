@@ -22,19 +22,40 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import com.google.samples.apps.sunflower.data.AppDatabase
+import com.google.samples.apps.sunflower.data.Login
 import com.google.samples.apps.sunflower.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding = FragmentLoginBinding.inflate(inflater, container, false)
-        binding.login.setOnClickListener { v ->
-            if (binding.username.text.toString() == "lisi"&&
-                    binding.password.text.toString()=="666") {
-                val direction =
-                        LoginFragmentDirections.actionLoginFragmentToViewPagerFragment()
-                v.findNavController().navigate(direction)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        val loginDao = AppDatabase.getInstance(context!!).loginDao()
+        return FragmentLoginBinding.inflate(inflater, container, false).apply {
+            loginDao.getLoginInfo().apply {
+                val username1 = value?.username
+                username.setText(username1)
+                password.setText(value?.password)
             }
-        }
-        return binding.root
+
+            login.setOnClickListener { v ->
+                val username = username.text.toString()
+                if (username == "lisi"&&
+                        password.text.toString()=="666") {
+                    val direction =
+                            LoginFragmentDirections.actionLoginFragmentToViewPagerFragment()
+                    v.findNavController().navigate(direction)
+
+                   Thread {
+                      kotlin.run {
+                          loginDao.saveLoginInfo(Login(
+                                  username,password.text.toString()
+                          ))
+                      }
+                   }.start()
+                }
+            }
+        }.root
+
+
     }
 }
