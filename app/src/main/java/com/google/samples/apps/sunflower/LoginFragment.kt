@@ -25,15 +25,18 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.google.samples.apps.sunflower.data.AppDatabase
 import com.google.samples.apps.sunflower.data.Login
+import com.google.samples.apps.sunflower.data.LoginDao
 import com.google.samples.apps.sunflower.databinding.FragmentLoginBinding
 import kotlinx.android.synthetic.main.fragment_login.view.*
 
 class LoginFragment : Fragment() {
+    private lateinit var root:View
+    private lateinit var loginDao: LoginDao
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val loginDao = AppDatabase.getInstance(context!!).loginDao()
+         loginDao = AppDatabase.getInstance(context!!).loginDao()
 
-        val root = FragmentLoginBinding.inflate(inflater, container, false).apply {
+         root = FragmentLoginBinding.inflate(inflater, container, false).apply {
 
             login.setOnClickListener { v ->
                 val username = username.text.toString()
@@ -60,11 +63,14 @@ class LoginFragment : Fragment() {
         Thread(){
             kotlin.run {
                 loginDao.getLoginInfo("666").apply {
-                    root.username.setText(this.username)
-                    root.password.setText(this.password)
+                    activity!!.runOnUiThread {
+                        root.username.setText(this.username)
+                        root.password.setText(this.password)
+                    }
+
                 }
             }
-        }
+        }.start()
         return root
     }
 
