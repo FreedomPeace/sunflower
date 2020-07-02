@@ -22,12 +22,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import com.google.samples.apps.sunflower.data.AppDatabase
 import com.google.samples.apps.sunflower.data.Login
 import com.google.samples.apps.sunflower.data.LoginDao
 import com.google.samples.apps.sunflower.databinding.FragmentLoginBinding
-import kotlinx.android.synthetic.main.fragment_login.view.*
+import com.google.samples.apps.sunflower.viewmodels.LoginViewModel
 
 class LoginFragment : Fragment() {
     private lateinit var root:View
@@ -37,40 +36,42 @@ class LoginFragment : Fragment() {
          loginDao = AppDatabase.getInstance(context!!).loginDao()
 
          root = FragmentLoginBinding.inflate(inflater, container, false).apply {
-
+            val loginViewModel = LoginViewModel(loginDao, activity!!.application)
+             viewModel = loginViewModel
+             lifecycleOwner = viewLifecycleOwner
             login.setOnClickListener { v ->
                 val username = username.text.toString()
                 val password = password.text.toString()
                 if (!TextUtils.isEmpty(username) &&
                         !TextUtils.isEmpty(password)) {
-                    val direction =
-                            LoginFragmentDirections.actionLoginFragmentToViewPagerFragment()
-                    v.findNavController().navigate(direction)
-                    Thread {
-                        kotlin.run {
-                            val ret = loginDao.saveLoginInfo(Login(
-                                    username, password
-                            ))
-                            println(ret)
-                            val message = loginDao.getLoginInfo()
-                            println(message)
-                        }
-                    }
-                .start()
+                    loginViewModel.saveLoginInfo(Login(username,password))
+//                    val direction =
+//                            LoginFragmentDirections.actionLoginFragmentToViewPagerFragment()
+//                    v.findNavController().navigate(direction)
+//                    Thread {
+//                        kotlin.run {
+//                            val ret = loginDao.saveLoginInfo(Login(
+//                                    username, password
+//                            ))
+//                            println(ret)
+//                            val message = loginDao.getLoginInfo()
+//                            println(message)
+//                        }
+//                    }.start()
                 }
             }
         }.root
-        Thread(){
-            kotlin.run {
-                loginDao.getLoginInfo("666").apply {
-                    activity!!.runOnUiThread {
-                        root.username.setText(this.username)
-                        root.password.setText(this.password)
-                    }
-
-                }
-            }
-        }.start()
+//        Thread(){
+//            kotlin.run {
+//                loginDao.getLoginInfo("666").apply {
+//                    activity!!.runOnUiThread {
+//                        root.username.setText(this.username)
+//                        root.password.setText(this.password)
+//                    }
+//
+//                }
+//            }
+//        }.start()
         return root
     }
 

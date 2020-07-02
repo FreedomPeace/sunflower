@@ -15,13 +15,32 @@
  */
 
 package com.google.samples.apps.sunflower.viewmodels
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import com.google.samples.apps.sunflower.data.Login
+import com.google.samples.apps.sunflower.data.LoginDao
+import kotlinx.coroutines.launch
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+class LoginViewModel(
+        private var loginDao: LoginDao, application: Application
+) : AndroidViewModel(application) {
+//    var username: MutableLiveData<String> = MutableLiveData()
+//    var password: MutableLiveData<String> = MutableLiveData()
 
-class LoginViewModel : ViewModel() {
-      var username:MutableLiveData<String> = MutableLiveData()
-      var password:MutableLiveData<String> = MutableLiveData()
+    fun loginInfo666() = loginDao.getLoginInfo666("666")
+//    {
+//          val loginInfo666 = loginDao.getLoginInfo666("666")
+//          username.value = loginInfo666.value?.username;
+//          password.value = loginInfo666.value?.password;
+//    }
 
+    fun saveLoginInfo(loginInfo: Login) {
+        viewModelScope.launch {
+            val saveLoginInfo = loginDao.saveLoginInfo(loginInfo)
+            println(saveLoginInfo)
+        }
+
+    }
 
 }

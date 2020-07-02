@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.sunflower.data
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -24,10 +25,12 @@ import androidx.room.Query
 interface LoginDao {
     @Query("SELECT * FROM login where id = :id limit 1")
     fun getLoginInfo(id:String): Login
+    @Query("SELECT * FROM login where id = :id limit 1")
+    fun getLoginInfo666(id:String): LiveData<Login>
 
     @Query("SELECT * FROM login ")
     fun getLoginInfo(): List<Login>
 
     @Insert(onConflict =  OnConflictStrategy.REPLACE)
-    /*suspend*/ fun saveLoginInfo(loginInfo: Login):Long
+    suspend fun saveLoginInfo(loginInfo: Login):Long
 }
