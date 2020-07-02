@@ -21,7 +21,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "login")
-class Login(
+data class Login(
          val username: String,
          @PrimaryKey @ColumnInfo(name = "id") val password: String
 ) {

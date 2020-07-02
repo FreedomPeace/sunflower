@@ -17,6 +17,7 @@
 package com.google.samples.apps.sunflower
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,37 +26,46 @@ import androidx.navigation.findNavController
 import com.google.samples.apps.sunflower.data.AppDatabase
 import com.google.samples.apps.sunflower.data.Login
 import com.google.samples.apps.sunflower.databinding.FragmentLoginBinding
+import kotlinx.android.synthetic.main.fragment_login.view.*
 
 class LoginFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val loginDao = AppDatabase.getInstance(context!!).loginDao()
-        return FragmentLoginBinding.inflate(inflater, container, false).apply {
-            loginDao.getLoginInfo().apply {
-                val username1 = value?.username
-                username.setText(username1)
-                password.setText(value?.password)
-            }
+
+        val root = FragmentLoginBinding.inflate(inflater, container, false).apply {
 
             login.setOnClickListener { v ->
                 val username = username.text.toString()
-                if (username == "lisi"&&
-                        password.text.toString()=="666") {
+                val password = password.text.toString()
+                if (!TextUtils.isEmpty(username) &&
+                        !TextUtils.isEmpty(password)) {
                     val direction =
                             LoginFragmentDirections.actionLoginFragmentToViewPagerFragment()
                     v.findNavController().navigate(direction)
-
-                   Thread {
-                      kotlin.run {
-                          loginDao.saveLoginInfo(Login(
-                                  username,password.text.toString()
-                          ))
-                      }
-                   }.start()
+                    Thread {
+                        kotlin.run {
+                            val ret = loginDao.saveLoginInfo(Login(
+                                    username, password
+                            ))
+                            println(ret)
+                            val message = loginDao.getLoginInfo()
+                            println(message)
+                        }
+                    }
+                .start()
                 }
             }
         }.root
-
-
+        Thread(){
+            kotlin.run {
+                loginDao.getLoginInfo("666").apply {
+                    root.username.setText(this.username)
+                    root.password.setText(this.password)
+                }
+            }
+        }
+        return root
     }
+
 }
