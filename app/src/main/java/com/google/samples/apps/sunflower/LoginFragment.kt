@@ -21,7 +21,9 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.observe
 import com.google.samples.apps.sunflower.data.AppDatabase
 import com.google.samples.apps.sunflower.data.Login
 import com.google.samples.apps.sunflower.data.LoginDao
@@ -34,44 +36,27 @@ class LoginFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
          loginDao = AppDatabase.getInstance(context!!).loginDao()
-
+        val loginViewModel = LoginViewModel(loginDao, activity!!.application)
          root = FragmentLoginBinding.inflate(inflater, container, false).apply {
-            val loginViewModel = LoginViewModel(loginDao, activity!!.application)
+
              viewModel = loginViewModel
              lifecycleOwner = viewLifecycleOwner
+
             login.setOnClickListener { v ->
                 val username = username.text.toString()
                 val password = password.text.toString()
+                val direction =
+                        LoginFragmentDirections.actionLoginFragmentToViewPagerFragment()
+//                v.findNavController().navigate(direction)
                 if (!TextUtils.isEmpty(username) &&
                         !TextUtils.isEmpty(password)) {
                     loginViewModel.saveLoginInfo(Login(username,password))
-//                    val direction =
-//                            LoginFragmentDirections.actionLoginFragmentToViewPagerFragment()
-//                    v.findNavController().navigate(direction)
-//                    Thread {
-//                        kotlin.run {
-//                            val ret = loginDao.saveLoginInfo(Login(
-//                                    username, password
-//                            ))
-//                            println(ret)
-//                            val message = loginDao.getLoginInfo()
-//                            println(message)
-//                        }
-//                    }.start()
+                    loginViewModel.loginInfo666().observe(viewLifecycleOwner, fun(it: Login) {
+                        Toast.makeText(context, it.username, Toast.LENGTH_LONG).show()
+                    })
                 }
             }
         }.root
-//        Thread(){
-//            kotlin.run {
-//                loginDao.getLoginInfo("666").apply {
-//                    activity!!.runOnUiThread {
-//                        root.username.setText(this.username)
-//                        root.password.setText(this.password)
-//                    }
-//
-//                }
-//            }
-//        }.start()
         return root
     }
 

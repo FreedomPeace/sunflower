@@ -35,7 +35,6 @@ import com.google.samples.apps.sunflower.data.Plant
 import com.google.samples.apps.sunflower.databinding.FragmentPlantDetailBinding
 import com.google.samples.apps.sunflower.utilities.InjectorUtils
 import com.google.samples.apps.sunflower.viewmodels.PlantDetailViewModel
-import kotlin.properties.Delegates
 
 /**
  * A fragment representing a single Plant detail screen.
@@ -57,8 +56,6 @@ import kotlin.properties.Delegates
         ).apply {
             viewModel = plantDetailViewModel
             lifecycleOwner = viewLifecycleOwner
-            var a = 3>2?:3
-            var b = 3<2?:3
             callback = object : Callback {
                 override fun add(plant: Plant?) {
                     plant.let {

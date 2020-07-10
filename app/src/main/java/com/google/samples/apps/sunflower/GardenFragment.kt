@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.sunflower
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +24,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
-import androidx.navigation.Navigation
 import androidx.viewpager2.widget.ViewPager2
 import com.google.samples.apps.sunflower.adapters.GardenPlantingAdapter
 import com.google.samples.apps.sunflower.adapters.PLANT_LIST_PAGE_INDEX
@@ -50,8 +50,8 @@ class GardenFragment : Fragment() {
 
         binding.addPlant.setOnClickListener {
             val ac = HomeViewPagerFragmentDirections.actionViewPagerFragmentToLoginFragment()
-            Navigation.findNavController(it).navigate(ac)
-//            navigateToPlantListPage()
+//            Navigation.findNavController(it).navigate(ac)
+            navigateToPlantListPage()
         }
 
         subscribeUi(adapter, binding)
@@ -69,5 +69,21 @@ class GardenFragment : Fragment() {
     private fun navigateToPlantListPage() {
         requireActivity().findViewById<ViewPager2>(R.id.view_pager).currentItem =
             PLANT_LIST_PAGE_INDEX
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
     }
 }

@@ -55,8 +55,8 @@ class GardenPlantingAdapter :
             binding.setClickListener { view ->
                 binding.viewModel?.plantId?.let { plantId ->
                     navigateToPlant(plantId, view)
-                    val direction = HomeViewPagerFragmentDirections.actionViewPagerFragmentToLoginFragment()
-                    view.findNavController().navigate(direction)
+//                    val direction = HomeViewPagerFragmentDirections.actionViewPagerFragmentToLoginFragment()
+//                    view.findNavController().navigate(direction)
                 }
             }
         }
