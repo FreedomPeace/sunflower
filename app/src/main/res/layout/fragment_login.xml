@@ -20,6 +20,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+        <import type="com.google.samples.apps.sunflower.data.Login"/>
         <variable name="ViewModel" type="com.google.samples.apps.sunflower.viewmodels.LoginViewModel"/>
     </data>
 
@@ -27,14 +28,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <Button
+            android:id="@+id/login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="登    录"
+            app:layout_constraintBottom_toBottomOf="@+id/register"
+            app:layout_constraintStart_toStartOf="@+id/password"
+            app:layout_constraintTop_toTopOf="@+id/register"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="注    册"
+            app:layout_constraintEnd_toEndOf="@+id/password"
+            app:layout_constraintTop_toBottomOf="@+id/password" />
+
         <EditText
             android:id="@+id/password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:ems="10"
-            android:text="@{ViewModel.password}"
+            android:hint="输入密码666就能跳过去"
             android:inputType="textPassword"
+            android:text="@={ViewModel.password}"
             app:layout_constraintEnd_toEndOf="@+id/username"
             app:layout_constraintStart_toStartOf="@+id/username"
             app:layout_constraintTop_toBottomOf="@+id/username" />
@@ -46,18 +67,9 @@
             android:layout_marginTop="80dp"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="@{ViewModel.username}"
+            android:text="@={ViewModel.username}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="登    录"
-            app:layout_constraintEnd_toEndOf="@+id/password"
-            app:layout_constraintTop_toBottomOf="@+id/password" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -30,7 +30,11 @@ class LoginViewModel(
     var username: MutableLiveData<String> = MutableLiveData()
     var password: MutableLiveData<String> = MutableLiveData()
 
-    fun loginInfo666():LiveData<Login> = loginDao.getLoginInfo666("666")
+    fun loginInfo666():LiveData<Login> {
+        val loginInfo666 = loginDao.getLoginInfo666("666")
+        println("get${loginInfo666.value}")
+        return loginInfo666
+    }
 //    {
 //          val loginInfo666 = loginDao.getLoginInfo666("666")
 ////          username.value = loginInfo666.value?.username;
@@ -38,11 +42,12 @@ class LoginViewModel(
 //    }
 
     fun saveLoginInfo(loginInfo: Login) {
-        viewModelScope.launch {
+        viewModelScope.launch {//绑定Dispatch.Main
             val saveLoginInfo = loginDao.saveLoginInfo(loginInfo)
-            println(saveLoginInfo)
+            //net request
+            println("get$saveLoginInfo")
         }
-
+//        Toast.makeText(getApplication(), it.username, Toast.LENGTH_LONG).show()
     }
 
 }

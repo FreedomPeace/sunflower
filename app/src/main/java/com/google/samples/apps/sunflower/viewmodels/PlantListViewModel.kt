@@ -16,11 +16,7 @@
 
 package com.google.samples.apps.sunflower.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.switchMap
+import androidx.lifecycle.*
 import com.google.samples.apps.sunflower.PlantListFragment
 import com.google.samples.apps.sunflower.data.Plant
 import com.google.samples.apps.sunflower.data.PlantRepository
@@ -51,9 +47,9 @@ class PlantListViewModel internal constructor(
 
     fun isFiltered() = getSavedGrowZoneNumber().value != NO_GROW_ZONE
 
-    private fun getSavedGrowZoneNumber(): MutableLiveData<Int> {
-        return savedStateHandle.getLiveData(GROW_ZONE_SAVED_STATE_KEY, NO_GROW_ZONE)
-    }
+    private fun getSavedGrowZoneNumber(): MutableLiveData<Int> = savedStateHandle.getLiveData(GROW_ZONE_SAVED_STATE_KEY, NO_GROW_ZONE)
+//        return savedStateHandle.getLiveData(GROW_ZONE_SAVED_STATE_KEY, NO_GROW_ZONE)
+//    }
 
     companion object {
         private const val NO_GROW_ZONE = -1
