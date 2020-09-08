@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-include ':todo'
 
-include ':app'
+package com.example.todo.ui.slideshow
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+
+class SlideshowViewModel : ViewModel() {
+
+    private val _text = MutableLiveData<String>().apply {
+        value = "This is slideshow Fragment"
+    }
+    val text: LiveData<String> = _text
+}
